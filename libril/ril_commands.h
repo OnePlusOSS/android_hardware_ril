@@ -61,7 +61,11 @@
     {RIL_REQUEST_CHANGE_BARRING_PASSWORD, dispatchStrings, responseVoid},
     {RIL_REQUEST_QUERY_NETWORK_SELECTION_MODE, dispatchVoid, responseInts},
     {RIL_REQUEST_SET_NETWORK_SELECTION_AUTOMATIC, dispatchVoid, responseVoid},
-    {RIL_REQUEST_SET_NETWORK_SELECTION_MANUAL, dispatchString, responseVoid},
+#ifdef VENDOR_EDIT 
+	{RIL_REQUEST_SET_NETWORK_SELECTION_MANUAL, dispatchStrings, responseVoid},
+#else  /* VENDOR_EDIT */
+	{RIL_REQUEST_SET_NETWORK_SELECTION_MANUAL, dispatchString, responseVoid},
+#endif /* VENDOR_EDIT */
     {RIL_REQUEST_QUERY_AVAILABLE_NETWORKS , dispatchVoid, responseStrings},
     {RIL_REQUEST_DTMF_START, dispatchString, responseVoid},
     {RIL_REQUEST_DTMF_STOP, dispatchVoid, responseVoid},
@@ -151,4 +155,26 @@
     {RIL_REQUEST_PULL_LCEDATA, dispatchVoid, responseLceData},
     {RIL_REQUEST_GET_ACTIVITY_INFO, dispatchVoid, responseActivityData},
     {RIL_REQUEST_SIM_GET_ATR, dispatchInts, responseString},
+    {0, NULL, NULL}, 
+    {RIL_REQUEST_FACTORY_MODE_NV_PROCESS, dispatchInts, responseVoid}, 
+    #ifdef VENDOR_EDIT
+	{RIL_REQUEST_FACTORY_MODE_MODEM_GPIO,  dispatchInts, responseVoid},
+    {RIL_REQUEST_GET_BAND_MODE, dispatchVoid, responseInts},
+    {RIL_REQUEST_REPORT_BOOTUPNVRESTOR_STATE,  dispatchVoid, responseVoid},
+    {RIL_REQUEST_GET_RFFE_DEV_INFO,  dispatchInts, responseInts},
+
+    {0, NULL, NULL},                   
+
+    
+    {RIL_REQUEST_SIM_TRANSMIT_BASIC, dispatchSIM_IO, responseSIM_IO},
+ //add for test
+    {0, NULL, NULL},                   
+    {0, NULL, NULL},                   
+    {RIL_REQUEST_SIM_TRANSMIT_CHANNEL, dispatchSIM_IO, responseSIM_IO},
+    #endif /* VENDOR_EDIT */
+#ifdef VENDOR_EDIT
+    {RIL_REQUEST_GO_TO_ERROR_FATAL, dispatchVoid, responseVoid},
+    {RIL_REQUEST_GET_MDM_BASEBAND, dispatchVoid, responseString},
+    {RIL_REQUEST_SET_TDD_LTE, dispatchInts, responseVoid},
+#endif /* VENDOR_EDIT */
     {RIL_REQUEST_CAF_SIM_OPEN_CHANNEL_WITH_P2, dispatchOpenChannelWithP2, responseInts},

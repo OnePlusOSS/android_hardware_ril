@@ -872,6 +872,14 @@ dispatchSIM_IO (Parcel &p, RequestInfo *pRI) {
     memset (&simIO, 0, sizeof(simIO));
 
     // note we only check status at the end
+    #ifdef VENDOR_EDIT 
+    simIO.v6.cla = 0;
+    if(pRI->pCI->requestNumber != RIL_REQUEST_SIM_IO) {
+        status = p.readInt32(&t);
+        simIO.v6.cla = (int)t;
+    }
+    #endif /* VENDOR_EDIT */
+
 
     status = p.readInt32(&t);
     simIO.v6.command = (int)t;
@@ -5233,6 +5241,17 @@ requestToString(int request) {
         case RIL_UNSOL_DC_RT_INFO_CHANGED: return "UNSOL_DC_RT_INFO_CHANGED";
         case RIL_REQUEST_SHUTDOWN: return "SHUTDOWN";
         case RIL_UNSOL_RADIO_CAPABILITY: return "RIL_UNSOL_RADIO_CAPABILITY";
+        #ifdef VENDOR_EDIT 
+		case RIL_UNSOL_OEM_NV_BACKUP_RESPONSE: return "RIL_UNSOL_OEM_NV_BACKUP_RESPONSE";
+        case RIL_REQUEST_GET_BAND_MODE: return "RIL_REQUEST_GET_BAND_MODE";
+		case RIL_REQUEST_FACTORY_MODE_MODEM_GPIO: return "RIL_REQUEST_FACTORY_MODE_MODEM_GPIO";
+        case RIL_REQUEST_GET_RFFE_DEV_INFO: return "GET_RFFE_DEV_INFO";
+		case RIL_REQUEST_SIM_TRANSMIT_BASIC: return "SIM_TRANSMIT_BASIC";
+        case RIL_REQUEST_SIM_TRANSMIT_CHANNEL: return "SIM_TRANSMIT_CHANNEL";
+        #endif /* VENDOR_EDIT */
+		case RIL_REQUEST_GO_TO_ERROR_FATAL: return "RIL_REQUEST_GO_TO_ERROR_FATAL";
+		case RIL_REQUEST_GET_MDM_BASEBAND: return "RIL_REQUEST_GET_MDM_BASEBAND";
+		case RIL_REQUEST_SET_TDD_LTE: return "RIL_REQUEST_SET_TDD_LTE";	
         default: return "<unknown request>";
     }
 }
