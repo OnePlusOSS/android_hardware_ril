@@ -489,6 +489,11 @@ typedef struct {
 } RIL_Dial;
 
 typedef struct {
+    #ifdef VENDOR_EDIT 
+    //dengql@OnLineRD.AirService.RIL, 2012/09/26, Add for NFC E-wallet
+    int cla;
+    #endif /* VENDOR_EDIT */
+
     int command;    /* one of the commands listed for TS 27.007 +CRSM*/
     int fileid;     /* EF id */
     char *path;     /* "pathid" from TS 27.007 +CRSM command.
@@ -503,6 +508,11 @@ typedef struct {
 } RIL_SIM_IO_v5;
 
 typedef struct {
+    #ifdef VENDOR_EDIT 
+    //dengql@OnLineRD.AirService.RIL, 2012/09/26, Add for NFC E-wallet
+    int cla;
+    #endif /* VENDOR_EDIT */
+
     int command;    /* one of the commands listed for TS 27.007 +CRSM*/
     int fileid;     /* EF id */
     char *path;     /* "pathid" from TS 27.007 +CRSM command.
@@ -1491,6 +1501,12 @@ typedef struct {
   /* period (in ms) for which Rx is active */
   uint32_t rx_mode_time_ms;
 } RIL_ActivityStatsInfo;
+
+typedef struct {
+    uint8_t p2; /* P2 parameter */
+    char * aidPtr; /* AID value, See ETSI 102.221 and 101.220*/
+
+} RIL_CafOpenChannelParams;
 
 /**
  * RIL_REQUEST_GET_SIM_STATUS
@@ -4537,6 +4553,85 @@ typedef struct {
  * GENERIC_FAILURE
  */
 #define RIL_REQUEST_SIM_GET_ATR 136
+#ifdef VENDOR_EDIT 
+
+//DuYuanHua@OnLineRD.AirService.RIL, 2012/09/26, Add for EngineerMode
+
+#define RIL_REQUEST_OEM_BASE	137
+
+//xufei@OnLineRD.AirService.RIL, 2012/12/14, Add for factory mode nv process
+#define RIL_REQUEST_FACTORY_MODE_NV_PROCESS 138 //(RIL_REQUEST_OEM_BASE + 1)
+
+//TongJing.Shi@EXP.DataComm.Phone, 2013.08.29, Modify for
+#define RIL_REQUEST_FACTORY_MODE_MODEM_GPIO 139 //(RIL_REQUEST_OEM_BASE + 2)
+
+/**
+ * RIL_REQUEST_GET_BAND_MODE
+ *
+ *  get current band mode 
+ *
+ * "response" is int
+ *
+ * Valid errors:
+ *  SUCCESS
+ *  GENERIC_FAILURE
+ */
+
+#define RIL_REQUEST_GET_BAND_MODE 140 //(RIL_REQUEST_OEM_BASE + 3)
+
+//#ifdef VENDOR_EDIT
+//Zhengpeng.Tan@OnlineRD.AirService.Module, 2013/10/28, Add for  report nv_restore when bootup
+#define RIL_REQUEST_REPORT_BOOTUPNVRESTOR_STATE 141 //(RIL_REQUEST_OEM_BASE + 4)  
+
+//Wenlong.Cai@OnlineRD.AirService.Module, 2013/12/09, Add for get rffe device information
+#define RIL_REQUEST_GET_RFFE_DEV_INFO 142 //(RIL_REQUEST_OEM_BASE + 5)  
+
+//dengql@OnLineRD.AirService.RIL, 2012/09/26, Add for NFC E-wallet
+// "data" is a const RIL_SIM_IO *
+// "response" is a const RIL_SIM_IO_Response *
+#define RIL_REQUEST_SIM_TRANSMIT_BASIC 144 //(RIL_REQUEST_OEM_BASE+7)
+// "data" is a const char * containing the AID of the applet
+// "response" is a int * containing the channel id
+//#define RIL_REQUEST_SIM_OPEN_CHANNEL 145 //(RIL_REQUEST_OEM_BASE+8)
+// "data" is a const int * containing the channel id
+// "response" is NULL
+//#define RIL_REQUEST_SIM_CLOSE_CHANNEL 146 //(RIL_REQUEST_OEM_BASE+9)
+// "data" is a const RIL_SIM_IO *
+// "response" is a const RIL_SIM_IO_Response *
+#define RIL_REQUEST_SIM_TRANSMIT_CHANNEL 147 //(RIL_REQUEST_OEM_BASE+10)
+
+#endif /* VENDOR_EDIT */
+
+//yangli@OnlineRD.AirService.Module, 2014/05/20, Add for send msg to make modem reset, {
+#define RIL_REQUEST_GO_TO_ERROR_FATAL 148 //(RIL_REQUEST_OEM_BASE+11)
+#define RIL_REQUEST_GET_MDM_BASEBAND  149 //(RIL_REQUEST_OEM_BASE+12)
+//}add end
+
+//yangli@OnlineRD.AirService.Module, 2014/09/22, Add for set only tdd-lte
+#define RIL_REQUEST_SET_TDD_LTE 150  //(RIL_REQUEST_OEM_BASE+13)
+
+/**
+ * RIL_REQUEST_CAF_SIM_OPEN_CHANNEL_WITH_P2
+ *
+ * Open a new logical channel and select the given application. This command
+ * reflects TS 27.007 "open logical channel" operation (+CCHO). This request
+ * also specifies the P2 parameter.
+ *
+ * "data" is a const RIL_CafOpenChannelParam *
+ *
+ * "response" is int *
+ * ((int *)data)[0] contains the session id of the logical channel.
+ * ((int *)data)[1] onwards may optionally contain the select response for the
+ *     open channel command with one byte per integer.
+ *
+ * Valid errors:
+ *  SUCCESS
+ *  RADIO_NOT_AVAILABLE
+ *  GENERIC_FAILURE
+ *  MISSING_RESOURCE
+ *  NO_SUCH_ELEMENT
+ */
+#define RIL_REQUEST_CAF_SIM_OPEN_CHANNEL_WITH_P2 137
 
 /***********************************************************************/
 
@@ -5136,6 +5231,16 @@ typedef struct {
  *
  */
 #define RIL_UNSOL_LCEDATA_RECV 1045
+
+//penghongyi@oem.network add for nv backup response
+//#ifdef VENDOR_EDIT
+#define RIL_UNSOL_OEM_NV_BACKUP_RESPONSE 1046
+//#endif
+
+//#ifdef VENDOR_EDIT
+//Hongyu.Bi@EXP.DataComm.Modem, 2014/02/26, Add for clearcode29/33
+#define RIL_UNSOL_RAC_UPDATE  1047    //czp 1042-->1044  
+//#endif /* VENDOR_EDIT */
 
 /***********************************************************************/
 

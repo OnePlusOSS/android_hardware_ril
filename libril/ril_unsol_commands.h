@@ -60,3 +60,7 @@
     {RIL_UNSOL_ON_SS, responseSSData, WAKE_PARTIAL},
     {RIL_UNSOL_STK_CC_ALPHA_NOTIFY, responseString, WAKE_PARTIAL},
     {RIL_UNSOL_LCEDATA_RECV, responseLceData, WAKE_PARTIAL},
+	//penghongyi@Oneplus.network add for nv backup
+	//#ifdef VENDOR_EDIT
+	{RIL_UNSOL_OEM_NV_BACKUP_RESPONSE,responseString,WAKE_PARTIAL},
+	//#endif

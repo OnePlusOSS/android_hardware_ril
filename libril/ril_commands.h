@@ -61,7 +61,12 @@
     {RIL_REQUEST_CHANGE_BARRING_PASSWORD, dispatchStrings, responseVoid},
     {RIL_REQUEST_QUERY_NETWORK_SELECTION_MODE, dispatchVoid, responseInts},
     {RIL_REQUEST_SET_NETWORK_SELECTION_AUTOMATIC, dispatchVoid, responseVoid},
-    {RIL_REQUEST_SET_NETWORK_SELECTION_MANUAL, dispatchString, responseVoid},
+#ifdef VENDOR_EDIT 
+	//dql@OnLineRD.AirService.RIL, 2013/09/03, Modify for NW select by RAT.
+	{RIL_REQUEST_SET_NETWORK_SELECTION_MANUAL, dispatchStrings, responseVoid},
+#else  /* VENDOR_EDIT */
+	{RIL_REQUEST_SET_NETWORK_SELECTION_MANUAL, dispatchString, responseVoid},
+#endif /* VENDOR_EDIT */
     {RIL_REQUEST_QUERY_AVAILABLE_NETWORKS , dispatchVoid, responseStrings},
     {RIL_REQUEST_DTMF_START, dispatchString, responseVoid},
     {RIL_REQUEST_DTMF_STOP, dispatchVoid, responseVoid},
@@ -151,3 +156,36 @@
     {RIL_REQUEST_PULL_LCEDATA, dispatchVoid, responseLceData},
     {RIL_REQUEST_GET_ACTIVITY_INFO, dispatchVoid, responseActivityData},
     {RIL_REQUEST_SIM_GET_ATR, dispatchInts, responseString},
+//add by xufei
+    {0, NULL, NULL}, 
+    {RIL_REQUEST_FACTORY_MODE_NV_PROCESS, dispatchInts, responseVoid}, 
+    //add end
+    #ifdef VENDOR_EDIT
+	//TongJing.Shi@EXP.DataComm.Phone, 2013.08.31, Modify for
+	{RIL_REQUEST_FACTORY_MODE_MODEM_GPIO,  dispatchInts, responseVoid},
+    //DuYuanHua@OnLineRD.AirService.RIL, 2012/09/26, Add for EngineerMode
+    {RIL_REQUEST_GET_BAND_MODE, dispatchVoid, responseInts},
+    //Zhengpeng.Tan@OnlineRD.AirService.Module, 2013/11/15, Add for report nv_restore when bootup	
+    {RIL_REQUEST_REPORT_BOOTUPNVRESTOR_STATE,  dispatchVoid, responseVoid},
+	//Wenlong.Cai@OnlineRD.AirService.Module, 2013/12/09, Add for get rffe device information
+    {RIL_REQUEST_GET_RFFE_DEV_INFO,  dispatchInts, responseInts},
+
+    //zhunn@OnLineRD.AirService.Framework, 2013/02/19, add for skip RIL_REQUEST_OEM_BASE+6
+    {0, NULL, NULL},                   
+
+    
+	//dengql@OnLineRD.AirService.RIL, 2012/09/26, Add for NFC E-wallet
+    {RIL_REQUEST_SIM_TRANSMIT_BASIC, dispatchSIM_IO, responseSIM_IO},
+ //add for test
+    {0, NULL, NULL},                   
+    {0, NULL, NULL},                   
+    {RIL_REQUEST_SIM_TRANSMIT_CHANNEL, dispatchSIM_IO, responseSIM_IO},
+    #endif /* VENDOR_EDIT */
+//yangli@OnlineRD.AirService.Module, 2014/05/20, Add for send msg to make modem reset, {
+#ifdef VENDOR_EDIT
+    {RIL_REQUEST_GO_TO_ERROR_FATAL, dispatchVoid, responseVoid},
+    {RIL_REQUEST_GET_MDM_BASEBAND, dispatchVoid, responseString},
+    //yangli@OnlineRD.AirService.Module, 2014/09/22, Add for set only tdd-lte    
+    {RIL_REQUEST_SET_TDD_LTE, dispatchInts, responseVoid},
+#endif /* VENDOR_EDIT */
+    {RIL_REQUEST_CAF_SIM_OPEN_CHANNEL_WITH_P2, dispatchOpenChannelWithP2, responseInts},
