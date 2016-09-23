@@ -5147,13 +5147,13 @@ typedef struct {
 
 //DuYuanHua@OnLineRD.AirService.RIL, 2012/09/26, Add for EngineerMode
 
-#define RIL_REQUEST_OEM_BASE	140
+#define RIL_REQUEST_OEM_BASE   140
 
 //xufei@OnLineRD.AirService.RIL, 2012/12/14, Add for factory mode nv process
-#define RIL_REQUEST_FACTORY_MODE_NV_PROCESS (RIL_REQUEST_OEM_BASE + 1)
+#define RIL_REQUEST_FACTORY_MODE_NV_PROCESS 141
 
 //TongJing.Shi@EXP.DataComm.Phone, 2013.08.29, Modify for
-#define RIL_REQUEST_FACTORY_MODE_MODEM_GPIO (RIL_REQUEST_OEM_BASE + 2)
+#define RIL_REQUEST_FACTORY_MODE_MODEM_GPIO 142
 
 /**
  * RIL_REQUEST_GET_BAND_MODE
@@ -5167,38 +5167,38 @@ typedef struct {
  *  GENERIC_FAILURE
  */
 
-#define RIL_REQUEST_GET_BAND_MODE (RIL_REQUEST_OEM_BASE + 3)
+#define RIL_REQUEST_GET_BAND_MODE 143
 
 //#ifdef VENDOR_EDIT
 //Zhengpeng.Tan@OnlineRD.AirService.Module, 2013/10/28, Add for  report nv_restore when bootup
-#define RIL_REQUEST_REPORT_BOOTUPNVRESTOR_STATE (RIL_REQUEST_OEM_BASE + 4)
+#define RIL_REQUEST_REPORT_BOOTUPNVRESTOR_STATE 144 
 
 //Wenlong.Cai@OnlineRD.AirService.Module, 2013/12/09, Add for get rffe device information
-#define RIL_REQUEST_GET_RFFE_DEV_INFO (RIL_REQUEST_OEM_BASE + 5)
+#define RIL_REQUEST_GET_RFFE_DEV_INFO 145
 
 //dengql@OnLineRD.AirService.RIL, 2012/09/26, Add for NFC E-wallet
 // "data" is a const RIL_SIM_IO *
 // "response" is a const RIL_SIM_IO_Response *
-#define RIL_REQUEST_SIM_TRANSMIT_BASIC (RIL_REQUEST_OEM_BASE+7)
+#define RIL_REQUEST_SIM_TRANSMIT_BASIC 147
 // "data" is a const char * containing the AID of the applet
 // "response" is a int * containing the channel id
-//#define RIL_REQUEST_SIM_OPEN_CHANNEL (RIL_REQUEST_OEM_BASE+8)
+//#define RIL_REQUEST_SIM_OPEN_CHANNEL 148
 // "data" is a const int * containing the channel id
 // "response" is NULL
-//#define RIL_REQUEST_SIM_CLOSE_CHANNEL (RIL_REQUEST_OEM_BASE+9)
+//#define RIL_REQUEST_SIM_CLOSE_CHANNEL 149
 // "data" is a const RIL_SIM_IO *
 // "response" is a const RIL_SIM_IO_Response *
-#define RIL_REQUEST_SIM_TRANSMIT_CHANNEL (RIL_REQUEST_OEM_BASE+10)
+#define RIL_REQUEST_SIM_TRANSMIT_CHANNEL 150
 
 #endif /* VENDOR_EDIT */
 
 //yangli@OnlineRD.AirService.Module, 2014/05/20, Add for send msg to make modem reset, {
-#define RIL_REQUEST_GO_TO_ERROR_FATAL (RIL_REQUEST_OEM_BASE+11)
-#define RIL_REQUEST_GET_MDM_BASEBAND  (RIL_REQUEST_OEM_BASE+12)
+#define RIL_REQUEST_GO_TO_ERROR_FATAL 151
+#define RIL_REQUEST_GET_MDM_BASEBAND  152
 //}add end
 
 //yangli@OnlineRD.AirService.Module, 2014/09/22, Add for set only tdd-lte
-#define RIL_REQUEST_SET_TDD_LTE (RIL_REQUEST_OEM_BASE+13)
+#define RIL_REQUEST_SET_TDD_LTE 153
 
 /**
  * RIL_REQUEST_CAF_SIM_OPEN_CHANNEL_WITH_P2
