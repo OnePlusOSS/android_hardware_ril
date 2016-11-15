@@ -271,6 +271,7 @@ static void dispatchUiccSubscripton(Parcel &p, RequestInfo *pRI);
 static void dispatchSimAuthentication(Parcel &p, RequestInfo *pRI);
 static void dispatchDataProfile(Parcel &p, RequestInfo *pRI);
 static void dispatchRadioCapability(Parcel &p, RequestInfo *pRI);
+static void dispatchOpenChannelWithP2(Parcel &p, RequestInfo *pRI);
 static int responseInts(Parcel &p, void *response, size_t responselen);
 static int responseFailCause(Parcel &p, void *response, size_t responselen);
 static int responseStrings(Parcel &p, void *response, size_t responselen);
@@ -871,6 +872,15 @@ dispatchSIM_IO (Parcel &p, RequestInfo *pRI) {
     memset (&simIO, 0, sizeof(simIO));
 
     // note we only check status at the end
+    #ifdef VENDOR_EDIT 
+    //dengql@OnLineRD.AirService.RIL, 2012/09/26, Add for NFC E-wallet
+    simIO.v6.cla = 0;
+    if(pRI->pCI->requestNumber != RIL_REQUEST_SIM_IO) {
+        status = p.readInt32(&t);
+        simIO.v6.cla = (int)t;
+    }
+    #endif /* VENDOR_EDIT */
+
 
     status = p.readInt32(&t);
     simIO.v6.command = (int)t;
@@ -2044,6 +2054,57 @@ static void dispatchRadioCapability(Parcel &p, RequestInfo *pRI){
                 &rc,
                 sizeof(RIL_RadioCapability),
                 pRI, pRI->socket_id);
+    return;
+invalid:
+    invalidCommandBlock(pRI);
+    return;
+}
+
+/**
+ * Callee expects const RIL_CafOpenChannelParams *
+ * Payload is:
+ * byte p2
+ * char * aidPtr
+ */
+static void dispatchOpenChannelWithP2 (Parcel &p, RequestInfo *pRI) {
+    RIL_CafOpenChannelParams openChannel;
+    status_t status;
+    uint8_t p2;
+
+#if VDBG
+    RLOGD("dispatchOpenChannelWithP2");
+#endif
+    memset (&openChannel, 0, sizeof(RIL_CafOpenChannelParams));
+
+    status = p.read(&p2, sizeof(p2));
+    openChannel.p2 = (uint8_t) p2;
+
+    openChannel.aidPtr = strdupReadString(p);
+    if (status != NO_ERROR || openChannel.aidPtr == NULL) {
+        goto invalid;
+    }
+
+    startRequest;
+    appendPrintBuf("%s[p2:%d, aid:%s]", printBuf, openChannel.p2, openChannel.aidPtr);
+
+    closeRequest;
+    printRequest(pRI->token, pRI->pCI->requestNumber);
+
+    CALL_ONREQUEST(pRI->pCI->requestNumber,
+                &openChannel,
+                sizeof(openChannel),
+                pRI, pRI->socket_id);
+
+#ifdef MEMSET_FREED
+    memsetString(openChannel.aidPtr);
+#endif
+
+    free(openChannel.aidPtr);
+
+#ifdef MEMSET_FREED
+    memset(&openChannel, 0, sizeof(openChannel));
+#endif
+
     return;
 invalid:
     invalidCommandBlock(pRI);
@@ -5124,6 +5185,7 @@ requestToString(int request) {
         case RIL_REQUEST_IMS_SEND_SMS: return "IMS_SEND_SMS";
         case RIL_REQUEST_SIM_TRANSMIT_APDU_BASIC: return "SIM_TRANSMIT_APDU_BASIC";
         case RIL_REQUEST_SIM_OPEN_CHANNEL: return "SIM_OPEN_CHANNEL";
+        case RIL_REQUEST_CAF_SIM_OPEN_CHANNEL_WITH_P2: return "CAF_SIM_OPEN_CHANNEL_WITH_P2";
         case RIL_REQUEST_SIM_CLOSE_CHANNEL: return "SIM_CLOSE_CHANNEL";
         case RIL_REQUEST_SIM_TRANSMIT_APDU_CHANNEL: return "SIM_TRANSMIT_APDU_CHANNEL";
         case RIL_REQUEST_GET_RADIO_CAPABILITY: return "RIL_REQUEST_GET_RADIO_CAPABILITY";
@@ -5180,6 +5242,28 @@ requestToString(int request) {
         case RIL_UNSOL_DC_RT_INFO_CHANGED: return "UNSOL_DC_RT_INFO_CHANGED";
         case RIL_REQUEST_SHUTDOWN: return "SHUTDOWN";
         case RIL_UNSOL_RADIO_CAPABILITY: return "RIL_UNSOL_RADIO_CAPABILITY";
+        #ifdef VENDOR_EDIT 
+		//penghongyi@mobile.network add for nv backup response
+		case RIL_UNSOL_OEM_NV_BACKUP_RESPONSE: return "RIL_UNSOL_OEM_NV_BACKUP_RESPONSE";
+        //DuYuanHua@OnLineRD.AirService.RIL, 2012/09/26, Add for EngineerMode
+        case RIL_REQUEST_GET_BAND_MODE: return "RIL_REQUEST_GET_BAND_MODE";
+		//xufei@OnLineRD.AirService.RIL, 2012/12/14, Add for factory mode nv process
+		//TongJing.Shi@EXP.DataComm.Phone, 2013.09.03, Modify for
+		case RIL_REQUEST_FACTORY_MODE_MODEM_GPIO: return "RIL_REQUEST_FACTORY_MODE_MODEM_GPIO";
+		//Wenlong.Cai@OnlineRD.AirService.Module, 2013/12/09, Add for get rffe device information
+        case RIL_REQUEST_GET_RFFE_DEV_INFO: return "GET_RFFE_DEV_INFO";
+		//dengql@OnLineRD.AirService.RIL, 2012/09/26, Add for NFC E-wallet
+		case RIL_REQUEST_SIM_TRANSMIT_BASIC: return "SIM_TRANSMIT_BASIC";
+        case RIL_REQUEST_SIM_TRANSMIT_CHANNEL: return "SIM_TRANSMIT_CHANNEL";
+        #endif /* VENDOR_EDIT */
+		//#ifdef VENDOR_EDIT
+		//yangli@OnlineRD.AirService.Module, 2014/05/20, Add for send msg to make modem reset, {
+		case RIL_REQUEST_GO_TO_ERROR_FATAL: return "RIL_REQUEST_GO_TO_ERROR_FATAL";
+		case RIL_REQUEST_GET_MDM_BASEBAND: return "RIL_REQUEST_GET_MDM_BASEBAND";
+		//}add end
+		//#endif /* VENDOR_EDIT */
+		//yangli@OnlineRD.AirService.Module, 2014/09/22, Add for set only tdd-lte
+		case RIL_REQUEST_SET_TDD_LTE: return "RIL_REQUEST_SET_TDD_LTE";	
         default: return "<unknown request>";
     }
 }
