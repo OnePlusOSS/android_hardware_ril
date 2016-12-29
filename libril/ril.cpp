@@ -6025,6 +6025,28 @@ requestToString(int request) {
         case RIL_UNSOL_PCO_DATA: return "RIL_UNSOL_PCO_DATA";
         case RIL_UNSOL_RESPONSE_ADN_INIT_DONE: return "RIL_UNSOL_RESPONSE_ADN_INIT_DONE";
         case RIL_UNSOL_RESPONSE_ADN_RECORDS: return "RIL_UNSOL_RESPONSE_ADN_RECORDS";
+        #ifdef VENDOR_EDIT 
+        //penghongyi@mobile.network add for nv backup response
+        case RIL_UNSOL_OEM_NV_BACKUP_RESPONSE: return "RIL_UNSOL_OEM_NV_BACKUP_RESPONSE";
+        //DuYuanHua@OnLineRD.AirService.RIL, 2012/09/26, Add for EngineerMode
+        case RIL_REQUEST_GET_BAND_MODE: return "RIL_REQUEST_GET_BAND_MODE";
+        //xufei@OnLineRD.AirService.RIL, 2012/12/14, Add for factory mode nv process
+        //TongJing.Shi@EXP.DataComm.Phone, 2013.09.03, Modify for
+        case RIL_REQUEST_FACTORY_MODE_MODEM_GPIO: return "RIL_REQUEST_FACTORY_MODE_MODEM_GPIO";
+        //Wenlong.Cai@OnlineRD.AirService.Module, 2013/12/09, Add for get rffe device information
+        case RIL_REQUEST_GET_RFFE_DEV_INFO: return "GET_RFFE_DEV_INFO";
+        //dengql@OnLineRD.AirService.RIL, 2012/09/26, Add for NFC E-wallet
+        case RIL_REQUEST_SIM_TRANSMIT_BASIC: return "SIM_TRANSMIT_BASIC";
+        case RIL_REQUEST_SIM_TRANSMIT_CHANNEL: return "SIM_TRANSMIT_CHANNEL";
+        #endif /* VENDOR_EDIT */
+        //#ifdef VENDOR_EDIT
+        //yangli@OnlineRD.AirService.Module, 2014/05/20, Add for send msg to make modem reset, {
+        case RIL_REQUEST_GO_TO_ERROR_FATAL: return "RIL_REQUEST_GO_TO_ERROR_FATAL";
+        case RIL_REQUEST_GET_MDM_BASEBAND: return "RIL_REQUEST_GET_MDM_BASEBAND";
+        //}add end
+        //#endif /* VENDOR_EDIT */
+        //yangli@OnlineRD.AirService.Module, 2014/09/22, Add for set only tdd-lte
+        case RIL_REQUEST_SET_TDD_LTE: return "RIL_REQUEST_SET_TDD_LTE";
         default: return "<unknown request>";
     }
 }
