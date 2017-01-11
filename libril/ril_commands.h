@@ -156,7 +156,6 @@
     {RIL_REQUEST_CAF_SIM_OPEN_CHANNEL_WITH_P2, dispatchOpenChannelWithP2, responseInts},
     {RIL_REQUEST_GET_ADN_RECORD, dispatchVoid, responseInts},
     {RIL_REQUEST_UPDATE_ADN_RECORD, dispatchAdnRecord, responseInts},
-<<<<<<< HEAD
     #ifdef VENDOR_EDIT
     {RIL_REQUEST_FACTORY_MODE_NV_PROCESS, dispatchInts, responseVoid}, 
     //TongJing.Shi@EXP.DataComm.Phone, 2013.08.31, Modify for
@@ -179,5 +178,3 @@
     //yangli@OnlineRD.AirService.Module, 2014/09/22, Add for set only tdd-lte
     {RIL_REQUEST_SET_TDD_LTE, dispatchInts, responseVoid},
 #endif /* VENDOR_EDIT */
-=======
->>>>>>> origin/qc8996_N
