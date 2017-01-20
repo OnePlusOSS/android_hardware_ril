@@ -588,6 +588,11 @@ typedef struct {
 } RIL_Dial;
 
 typedef struct {
+    #ifdef VENDOR_EDIT
+    //dengql@OnLineRD.AirService.RIL, 2012/09/26, Add for NFC E-wallet
+    int cla;
+    #endif /* VENDOR_EDIT */
+
     int command;    /* one of the commands listed for TS 27.007 +CRSM*/
     int fileid;     /* EF id */
     char *path;     /* "pathid" from TS 27.007 +CRSM command.
@@ -602,6 +607,11 @@ typedef struct {
 } RIL_SIM_IO_v5;
 
 typedef struct {
+    #ifdef VENDOR_EDIT
+    //dengql@OnLineRD.AirService.RIL, 2012/09/26, Add for NFC E-wallet
+    int cla;
+    #endif /* VENDOR_EDIT */
+
     int command;    /* one of the commands listed for TS 27.007 +CRSM*/
     int fileid;     /* EF id */
     char *path;     /* "pathid" from TS 27.007 +CRSM command.
@@ -5134,6 +5144,7 @@ typedef struct {
  */
 #define RIL_REQUEST_SIM_GET_ATR 136
 
+
 /**
  * RIL_REQUEST_CAF_SIM_OPEN_CHANNEL_WITH_P2
  *
@@ -5189,7 +5200,62 @@ typedef struct {
  *  Must never fail
  */
 #define RIL_REQUEST_UPDATE_ADN_RECORD 139
+#ifdef VENDOR_EDIT 
 
+//DuYuanHua@OnLineRD.AirService.RIL, 2012/09/26, Add for EngineerMode
+
+
+
+//xufei@OnLineRD.AirService.RIL, 2012/12/14, Add for factory mode nv process
+#define RIL_REQUEST_FACTORY_MODE_NV_PROCESS 140
+
+//TongJing.Shi@EXP.DataComm.Phone, 2013.08.29, Modify for
+#define RIL_REQUEST_FACTORY_MODE_MODEM_GPIO 141
+
+/**
+ * RIL_REQUEST_GET_BAND_MODE
+ *
+ *  get current band mode 
+ *
+ * "response" is int
+ *
+ * Valid errors:
+ *  SUCCESS
+ *  GENERIC_FAILURE
+ */
+
+#define RIL_REQUEST_GET_BAND_MODE 142
+
+//#ifdef VENDOR_EDIT
+//Zhengpeng.Tan@OnlineRD.AirService.Module, 2013/10/28, Add for  report nv_restore when bootup
+#define RIL_REQUEST_REPORT_BOOTUPNVRESTOR_STATE 143 
+
+//Wenlong.Cai@OnlineRD.AirService.Module, 2013/12/09, Add for get rffe device information
+#define RIL_REQUEST_GET_RFFE_DEV_INFO 144
+
+//dengql@OnLineRD.AirService.RIL, 2012/09/26, Add for NFC E-wallet
+// "data" is a const RIL_SIM_IO *
+// "response" is a const RIL_SIM_IO_Response *
+#define RIL_REQUEST_SIM_TRANSMIT_BASIC 146
+// "data" is a const char * containing the AID of the applet
+// "response" is a int * containing the channel id
+//#define RIL_REQUEST_SIM_OPEN_CHANNEL 147
+// "data" is a const int * containing the channel id
+// "response" is NULL
+//#define RIL_REQUEST_SIM_CLOSE_CHANNEL 148
+// "data" is a const RIL_SIM_IO *
+// "response" is a const RIL_SIM_IO_Response *
+#define RIL_REQUEST_SIM_TRANSMIT_CHANNEL 149
+
+#endif /* VENDOR_EDIT */
+
+//yangli@OnlineRD.AirService.Module, 2014/05/20, Add for send msg to make modem reset, {
+#define RIL_REQUEST_GO_TO_ERROR_FATAL 150
+#define RIL_REQUEST_GET_MDM_BASEBAND  151
+//}add end
+
+//yangli@OnlineRD.AirService.Module, 2014/09/22, Add for set only tdd-lte
+#define RIL_REQUEST_SET_TDD_LTE 152
 
 /***********************************************************************/
 
@@ -5825,6 +5891,16 @@ typedef struct {
  *
  */
 #define RIL_UNSOL_RESPONSE_ADN_RECORDS 1047
+
+//penghongyi@oem.network add for nv backup response
+//#ifdef VENDOR_EDIT
+#define RIL_UNSOL_OEM_NV_BACKUP_RESPONSE 1048
+//#endif
+
+//#ifdef VENDOR_EDIT
+//Hongyu.Bi@EXP.DataComm.Modem, 2014/02/26, Add for clearcode29/33
+#define RIL_UNSOL_RAC_UPDATE  1049    //czp 1042-->1044
+//#endif /* VENDOR_EDIT */
 
 /***********************************************************************/
 
